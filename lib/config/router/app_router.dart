@@ -49,8 +49,8 @@ final goRouterProvider = Provider((ref) {
     ],
 
     redirect: (context, state) {
-      
-      final isGoingTo = state.matchedLocation;
+      // CAMBIO: Usar state.uri.toString() es el estándar moderno en GoRouter
+      final isGoingTo = state.uri.toString();
       final authStatus = goRouterNotifier.authStatus;
 
       if ( isGoingTo == '/splash' && authStatus == AuthStatus.checking ) return null;
@@ -66,7 +66,6 @@ final goRouterProvider = Provider((ref) {
            return '/';
         }
       }
-
 
       return null;
     },
