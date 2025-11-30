@@ -1,11 +1,11 @@
+// Archivo: android/build.gradle
+
 buildscript {
-    // CAMBIO: Actualizado a 1.9.0 para compatibilidad con Gradle 8+ y Flutter 3.x
-    ext.kotlin_version = '1.9.0' 
+    ext.kotlin_version = '1.9.0'
     repositories {
         google()
         mavenCentral()
     }
-
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -24,6 +24,19 @@ subprojects {
 }
 subprojects {
     project.evaluationDependsOn(':app')
+}
+
+// --- AGREGA ESTE BLOQUE AL FINAL ---
+subprojects {
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            // Si alguien pide 'androidx.activity', le damos la versión 1.9.3
+            // para evitar el error de requerir Gradle 8.9
+            if (details.requested.group == 'androidx.activity') {
+                details.useVersion "1.9.3"
+            }
+        }
+    }
 }
 
 tasks.register("clean", Delete) {
